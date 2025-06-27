@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>EUA</title>
+  </head>
+  <body>
+    <header
+      class="bg-zinc-800 w-screen h-[8vh] flex items-center justify-center text-white text-xl"
+    >
+      Espace Room - Teste
+    </header>
+    <!--Parabéns Ryan, feliz aniversário-->
+    <main class="flex flex-col items-center justify-center h-[92vh] px-4 py-8 gap-4">
+        <h1 class="text-3xl font-bold text-center text-gray-800">
+            Parabéns Ryan, feliz aniversário!
+        </h1>
+
+        <img 
+            src="images/eua.jpg" 
+            alt="Estados Unidos" 
+            class="max-w-full h-auto object-cover rounded-lg shadow-md mx-auto block"
+            loading="lazy"
+        />
+        <form class="flex flex-col gap-6 w-full max-w-md border-t border-gray-300 pt-6">
+            <label class="flex flex-col gap-4">
+                Senha da próxima sala: 
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Digite a senha"/>
+            </label>
+        </form>
+    </main>
+    <!--Essa é apenas a primeira fase! Bora lá-->
+  </body>
+</html>
