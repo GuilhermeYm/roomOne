@@ -46,7 +46,6 @@
             </button>
         </form>
 
-        <!-- Div que aparece quando a senha está correta -->
         <div id="success-message" class="hidden w-full max-w-md bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg shadow-md">
             <div class="flex flex-col items-center gap-3">
                 <h2 class="text-xl font-bold">🎉 Parabéns, Ryan!</h2>
@@ -64,7 +63,7 @@
             </div>
         </div>
 
-        <!-- Div para mensagem de erro -->
+
         <div id="error-message" class="hidden w-full max-w-md bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-md">
             <div class="flex flex-col items-center gap-2">
                 <h3 class="text-lg font-bold">❌ Senha Incorreta</h3>
@@ -72,7 +71,8 @@
             </div>
         </div>
     </main>
-    <!--Essa é apenas a primeira fase! Bora lá-->
-    <script src="script.js"></script>
+    <script>
+    (function(){const a=document.getElementById('key'),b=document.querySelector('button'),c=document.getElementById('success-message'),d=document.getElementById('error-message');const e=()=>'06/23/2025';const f=(x)=>x===e();const g=()=>{c.classList.add('hidden');d.classList.add('hidden');};const h=()=>{c.classList.remove('hidden');c.scrollIntoView({behavior:'smooth'});a.value='';};const i=()=>{d.classList.remove('hidden');d.scrollIntoView({behavior:'smooth'});a.value='';};const j=()=>{const k=a.value.trim();g();f(k)?h():i();};b.addEventListener('click',(l)=>{l.preventDefault();j();});})();
+    </script>
   </body>
 </html>
