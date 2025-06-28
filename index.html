@@ -31,7 +31,7 @@
             class="max-w-full h-auto object-cover rounded-lg shadow-md mx-auto block"
             loading="lazy"
         />
-        <form class="flex flex-col gap-6 w-full max-w-md border-t border-gray-300 pt-6">
+        <form id="form" class="flex flex-col gap-6 w-full max-w-md border-t border-gray-300 pt-6">
             <label class="flex flex-col gap-4">
                 Senha da próxima sala: 
                 <input 
@@ -51,14 +51,13 @@
                 <h2 class="text-xl font-bold">🎉 Parabéns, Ryan!</h2>
                 <p class="text-center">Você desbloqueou a próxima fase!</p>
                 <a 
-                    href=".../roomOne/index.html"
-                    target="_blank"
+                    href="https://drive.google.com/drive/folders/1dsaRtJqXm4-rhTIchXi_gxvKIkDaS8rn?usp=drive_link"
                     class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors duration-300 flex items-center gap-2"
                 >
-                    📁 Acessar Pasta do Drive
+                    � Ir para Sala 2
                 </a>
                 <p class="text-sm text-center text-green-600">
-                    Clique no link acima para continuar sua aventura!
+                    Clique no botão acima para continuar sua aventura!
                 </p>
             </div>
         </div>
@@ -72,79 +71,85 @@
         </div>
     </main>
     <script>
-    (function(){
-        const a=document.getElementById('key'),
-              b=document.querySelector('button'),
-              c=document.getElementById('success-message'),
-              d=document.getElementById('error-message');
-        
-        const apiUrl = 'https://api.jsonbin.io/v3/b/685f35148561e97a502d1978';
+      const firebaseConfig = {
+        databaseURL: "https://ryananiversario-c88f9-default-rtdb.firebaseio.com/"
+      };
+
+      (function () {
+        const a = document.getElementById("key"),
+          b = document.querySelector("button"),
+          c = document.getElementById("success-message"),
+          d = document.getElementById("error-message"),
+          form = document.getElementById("form");
+
         let passwords = null;
-        
+
         async function loadPasswords() {
-            try {
-                const response = await fetch(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': '$2a$10$04AADEUWZ0F.DYYFvC0aLOTrpDG8MJzvqoztxzSfEJn8llgLno8Vy'
-                    }
-                });
-                const data = await response.json();
-                
-                passwords = data.record || data;
-            } catch (error) {
-                console.log('❌ Erro ao carregar API:', error);
-                passwords = null;
-            }
+          try {
+            const response = await fetch(
+              `${firebaseConfig.databaseURL}/escape-room/passwords.json`
+            );
+
+            if (!response.ok) throw new Error("Firebase error");
+
+            passwords = await response.json();
+          } catch (error) {
+            passwords = null;
+          }
         }
-        
+
         function checkPassword(input) {
-            if (!passwords) {
-                return input === 'Chame o bico';
-            }
-            
-            const isCorrect = input === passwords.room1;
-            
-            return isCorrect;
+          if (!passwords) {
+            return input === "Chame o bico";
+          }
+
+          const inputNormalized = input.trim().toUpperCase().replace(/\s+/g, " ");
+          const passwordNormalized = passwords.room1.trim().toUpperCase().replace(/\s+/g, " ");
+
+          const isCorrect = inputNormalized === passwordNormalized || input === passwords.room1;
+
+          return isCorrect;
         }
-        
+
         function hideMessages() {
-            c.classList.add('hidden');
-            d.classList.add('hidden');
+          c.classList.add("hidden");
+          d.classList.add("hidden");
         }
-        
+
         function showSuccess() {
-            c.classList.remove('hidden');
-            c.scrollIntoView({behavior:'smooth'});
-            a.value='';
+          form.style.display = "none";
+          
+          c.classList.remove("hidden");
+          c.scrollIntoView({ behavior: "smooth" });
+          a.value = "";
         }
-        
+
         function showError() {
-            d.classList.remove('hidden');
-            d.scrollIntoView({behavior:'smooth'});
-            a.value='';
+          d.classList.remove("hidden");
+          d.scrollIntoView({ behavior: "smooth" });
+          a.value = "";
         }
-        
+
         function handleSubmit() {
-            const input = a.value.trim();
-            hideMessages();
-            checkPassword(input) ? showSuccess() : showError();
+          const input = a.value.trim();
+          hideMessages();
+          checkPassword(input) ? showSuccess() : showError();
         }
-        
+
         loadPasswords();
-        
-        b.addEventListener('click', (e) => {
+
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          handleSubmit();
+        });
+
+        a.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
             e.preventDefault();
             handleSubmit();
+          }
         });
-        
-        a.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSubmit();
-            }
-        });
-    })();
+      })();
     </script>
   </body>
 </html>
