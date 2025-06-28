@@ -67,12 +67,84 @@
         <div id="error-message" class="hidden w-full max-w-md bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-md">
             <div class="flex flex-col items-center gap-2">
                 <h3 class="text-lg font-bold">❌ Senha Incorreta</h3>
-                <p class="text-center text-sm">Tente novamente! Dica: Data especial do Ryan...</p>
+                <p class="text-center text-sm">Tente novamente!</p>
             </div>
         </div>
     </main>
     <script>
-    (function(){const a=document.getElementById('key'),b=document.querySelector('button'),c=document.getElementById('success-message'),d=document.getElementById('error-message');const e=()=>'06/23/2025';const f=(x)=>x===e();const g=()=>{c.classList.add('hidden');d.classList.add('hidden');};const h=()=>{c.classList.remove('hidden');c.scrollIntoView({behavior:'smooth'});a.value='';};const i=()=>{d.classList.remove('hidden');d.scrollIntoView({behavior:'smooth'});a.value='';};const j=()=>{const k=a.value.trim();g();f(k)?h():i();};b.addEventListener('click',(l)=>{l.preventDefault();j();});})();
+    (function(){
+        const a=document.getElementById('key'),
+              b=document.querySelector('button'),
+              c=document.getElementById('success-message'),
+              d=document.getElementById('error-message');
+        
+        const apiUrl = 'https://api.jsonbin.io/v3/b/685f35148561e97a502d1978';
+        let passwords = null;
+        
+        async function loadPasswords() {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': '$2a$10$04AADEUWZ0F.DYYFvC0aLOTrpDG8MJzvqoztxzSfEJn8llgLno8Vy'
+                    }
+                });
+                const data = await response.json();
+                
+                passwords = data.record || data;
+            } catch (error) {
+                console.log('❌ Erro ao carregar API:', error);
+                passwords = null;
+            }
+        }
+        
+        function checkPassword(input) {
+            if (!passwords) {
+                return input === 'Chame o bico';
+            }
+            
+            const isCorrect = input === passwords.room1;
+            
+            return isCorrect;
+        }
+        
+        function hideMessages() {
+            c.classList.add('hidden');
+            d.classList.add('hidden');
+        }
+        
+        function showSuccess() {
+            c.classList.remove('hidden');
+            c.scrollIntoView({behavior:'smooth'});
+            a.value='';
+        }
+        
+        function showError() {
+            d.classList.remove('hidden');
+            d.scrollIntoView({behavior:'smooth'});
+            a.value='';
+        }
+        
+        function handleSubmit() {
+            const input = a.value.trim();
+            hideMessages();
+            checkPassword(input) ? showSuccess() : showError();
+        }
+        
+        loadPasswords();
+        
+        b.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleSubmit();
+        });
+        
+        a.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSubmit();
+            }
+        });
+    })();
     </script>
   </body>
 </html>
